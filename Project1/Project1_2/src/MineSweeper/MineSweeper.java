@@ -25,12 +25,13 @@ public class MineSweeper {
 
 		cpanel = new ControlPanel();
 		MineField board = new MineField(cpanel);
-        
-		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
-		frame.getContentPane().add(board);
-		frame.getContentPane().add(cpanel);
-//		frame.pack();
+		frame.getContentPane().setLayout(new BorderLayout());
+		frame.getContentPane().add(board, BorderLayout.CENTER);
+		frame.getContentPane().add(cpanel, BorderLayout.SOUTH);
+
+		frame.pack();
         frame.setVisible(true);
+        System.out.println(board.getSize());
 	}
 
 	public int getMarkedMines() {

@@ -2,6 +2,7 @@ package MineSweeper;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JButton;
+import java.awt.*;
 
 
 public class Node extends JButton {
@@ -9,8 +10,8 @@ public class Node extends JButton {
 	private int numBorderingMines;
 	public Node() {
 		// TODO Auto-generated constructor stub
-		super("");
-		super.setSize(15, 15);
+		super("     ");
+//		super.setMinimumSize(new Dimension(50, 50));
 	}
 
 	public Node(Icon icon) {

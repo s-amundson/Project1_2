@@ -50,6 +50,7 @@ public class MineField extends JPanel {
 		this.mineNum = mineNum;
 	}
 	public void generateFeild(){
+		setMinimumSize(new Dimension(50, 50));
 		setLayout(new GridLayout (gridWidth, gridHeight));
 		this.nodeArray = new Node [gridWidth][gridHeight];
 		Random rand = new Random();
@@ -122,7 +123,7 @@ public class MineField extends JPanel {
 								nodeArray[col][row].setText("");
 								cpanel.setMarkedMines(cpanel.getMarkedMines()-1);
 							}
-							else if(nodeArray[col][row].getText()==""){
+							else if(nodeArray[col][row].getText()=="     "){
 								nodeArray[col][row].setText("X");
 								cpanel.setMarkedMines(cpanel.getMarkedMines()+1);
 							}
