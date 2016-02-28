@@ -23,11 +23,9 @@ public class MineSweeper {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // perhaps create a dialog to ask if different size is desired?
 
-		cpanel = new ControlPanel();
-		MineField board = new MineField(cpanel);
+		MineField board = new MineField();
 		frame.getContentPane().setLayout(new BorderLayout());
 		frame.getContentPane().add(board, BorderLayout.CENTER);
-		frame.getContentPane().add(cpanel, BorderLayout.SOUTH);
 
 		frame.pack();
         frame.setVisible(true);

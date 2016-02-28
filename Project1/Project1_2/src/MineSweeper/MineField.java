@@ -2,6 +2,7 @@ package MineSweeper;
 
 import java.util.Random;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -11,10 +12,14 @@ public class MineField extends JPanel {
 	int gridHeight = 8;
 	int mineNum = 10;
 	Node [][] nodeArray;
-	ControlPanel cpanel;
-	public MineField(ControlPanel cp){
+	JPanel gamePanel;
+	Color buttonColor;
+	ControlPanel controlPanel;
+
+	
+	public MineField(){
 		//this.nodeArray = new Node [gridWidth] [gridHeight];
-		this.cpanel = cp;
+		createPanels();
 		generateFeild();
 	}
 	public MineField(int gridWidth, int gridHeight, int mineNum) {
@@ -23,6 +28,7 @@ public class MineField extends JPanel {
 		this.gridHeight = gridHeight;
 		this.mineNum = mineNum;
 		//this.nodeArray = new Node [gridWidth][gridHeight];
+		createPanels();
 		generateFeild();
 	}
 
@@ -49,12 +55,19 @@ public class MineField extends JPanel {
 	public void setMineNum(int mineNum) {
 		this.mineNum = mineNum;
 	}
+	public void createPanels(){
+		controlPanel = new ControlPanel(this);
+		gamePanel = new JPanel();
+		setLayout(new BorderLayout());
+		add(controlPanel, BorderLayout.NORTH);
+		add(gamePanel, BorderLayout.CENTER);
+//		controlPanel.startNew
+	}
 	public void generateFeild(){
-		setMinimumSize(new Dimension(50, 50));
-		setLayout(new GridLayout (gridWidth, gridHeight));
+//		setMinimumSize(new Dimension(50, 50));
+		gamePanel.setLayout(new GridLayout (gridWidth, gridHeight));
 		this.nodeArray = new Node [gridWidth][gridHeight];
-		Random rand = new Random();
-		Integer numMines;
+
 		
 		for(int i=0; i < gridHeight; i++){
 			for(int j=0; j < gridWidth; j++){
@@ -62,12 +75,27 @@ public class MineField extends JPanel {
 				nodeArray[i][j] = new Node();
 				nodeArray[i][j].addActionListener(new ButtonListner());
 //				nodeArray[i][j].addMouseListener(new MouseListener());
-				add(nodeArray[i][j]);
+				gamePanel.add(nodeArray[i][j]);
 //				System.out.print(nodeArray[i][j]);
 				
 			}
 		}
-		
+		this.buttonColor = nodeArray[0][0].getBackground();
+		newGame();
+	}
+	public void newGame(){
+		Random rand = new Random();
+		Integer numMines;
+		// loop though the field add the button to the panel and determine how many mines are neighboring each mine.
+		for(int col=0; col < gridWidth; col++){
+			for(int row=0; row < gridHeight; row++){
+				nodeArray[col][row].setMine(false);
+				nodeArray[col][row].setBackground(buttonColor);
+				nodeArray[col][row].setNumBorderingMines(0);
+				nodeArray[col][row].setText("     ");
+			}
+		}
+		controlPanel.setMarkedMines(0);
 		// create Mines (basically Matt's code)
 		for(int i=0; i<mineNum; i++)
 		{
@@ -120,17 +148,18 @@ public class MineField extends JPanel {
 						// check if shift key is pressed.
 						if(event.getModifiers()== 17){
 							if(nodeArray[col][row].getText()=="X"){
-								nodeArray[col][row].setText("");
-								cpanel.setMarkedMines(cpanel.getMarkedMines()-1);
+								nodeArray[col][row].setText("     ");
+								controlPanel.setMarkedMines(controlPanel.getMarkedMines()-1);
 							}
 							else if(nodeArray[col][row].getText()=="     "){
 								nodeArray[col][row].setText("X");
-								cpanel.setMarkedMines(cpanel.getMarkedMines()+1);
+								controlPanel.setMarkedMines(controlPanel.getMarkedMines()+1);
 							}
 						}
 //						System.out.println(event.getModifiers());
 						else{
 							if(nodeArray[col][row].isMine()){
+								nodeArray[col][row].setBackground(Color.red);
 								System.out.println("End Game");
 							}
 							else{
@@ -143,5 +172,4 @@ public class MineField extends JPanel {
 			
 		}
 	}
-//	private class MouseListner implements 
 }
