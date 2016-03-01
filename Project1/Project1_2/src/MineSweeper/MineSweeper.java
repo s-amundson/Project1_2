@@ -6,10 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MineSweeper {
-	private int markedMines = 0;
-	private static ControlPanel cpanel;
+
 	public MineSweeper() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -29,16 +27,6 @@ public class MineSweeper {
 
 		frame.pack();
         frame.setVisible(true);
-//        System.out.println(board.getSize());
-	}
-
-	public int getMarkedMines() {
-		return markedMines;
-	}
-
-	public void setMarkedMines(int markedMines) {
-		this.markedMines = markedMines;
-		cpanel.setMarkedMines(markedMines);
 	}
 	
 }

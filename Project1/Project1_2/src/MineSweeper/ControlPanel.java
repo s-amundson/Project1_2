@@ -4,7 +4,6 @@ import javax.swing.*;
 
 //import MineSweeper.MineField.ButtonListner;
 
-import java.awt.*;
 import java.awt.event.*;
 
 public class ControlPanel extends JPanel{

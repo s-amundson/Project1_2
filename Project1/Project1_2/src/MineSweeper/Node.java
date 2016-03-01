@@ -2,7 +2,6 @@ package MineSweeper;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JButton;
-import java.awt.*;
 
 
 public class Node extends JButton {
