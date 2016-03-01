@@ -15,7 +15,7 @@ public class MineField extends JPanel {
 	JPanel gamePanel;
 	Color buttonColor;
 	ControlPanel controlPanel;
-
+	private String defaultText = "     ";
 	
 	public MineField(){
 		//this.nodeArray = new Node [gridWidth] [gridHeight];
@@ -61,7 +61,6 @@ public class MineField extends JPanel {
 		setLayout(new BorderLayout());
 		add(controlPanel, BorderLayout.NORTH);
 		add(gamePanel, BorderLayout.CENTER);
-//		controlPanel.startNew
 	}
 	public void generateFeild(){
 //		setMinimumSize(new Dimension(50, 50));
@@ -74,9 +73,7 @@ public class MineField extends JPanel {
 				
 				nodeArray[i][j] = new Node();
 				nodeArray[i][j].addActionListener(new ButtonListner());
-//				nodeArray[i][j].addMouseListener(new MouseListener());
 				gamePanel.add(nodeArray[i][j]);
-//				System.out.print(nodeArray[i][j]);
 				
 			}
 		}
@@ -92,7 +89,7 @@ public class MineField extends JPanel {
 				nodeArray[col][row].setMine(false);
 				nodeArray[col][row].setBackground(buttonColor);
 				nodeArray[col][row].setNumBorderingMines(0);
-				nodeArray[col][row].setText("     ");
+				nodeArray[col][row].setText(defaultText);
 			}
 		}
 		controlPanel.setMarkedMines(0);
@@ -133,13 +130,40 @@ public class MineField extends JPanel {
 					}
 				}
 				nodeArray[col][row].setNumBorderingMines(numMines);
-//				nodeArray[col][row].setText(numMines.toString());
+
 			}
 			System.out.println();
 		}
 		
 		
 	}
+	public void showNumber(int col, int row){
+		try{
+			if(nodeArray[col][row].getText()== defaultText){
+				int numMines = nodeArray[col][row].getNumBorderingMines();
+				if(numMines==0){
+					nodeArray[col][row].setText("");
+					nodeArray[col][row].setBackground(Color.LIGHT_GRAY);
+					for(int n = -1; n<2; n++){
+						for(int m = -1; m<2; m++){
+							if(n==0 && m == 0){
+								continue;
+							}
+							showNumber(col+n, row+m);
+							
+						}
+						
+					}
+				}
+				else{
+					nodeArray[col][row].setText(String.valueOf(numMines));
+					nodeArray[col][row].setBackground(Color.LIGHT_GRAY);
+				}
+			}
+		} catch (ArrayIndexOutOfBoundsException e){
+		}
+	}
+	
 	private class ButtonListner implements ActionListener{
 		public void actionPerformed(ActionEvent event){
 			for(int col=0; col < gridWidth; col++){
@@ -152,18 +176,20 @@ public class MineField extends JPanel {
 								controlPanel.setMarkedMines(controlPanel.getMarkedMines()-1);
 							}
 							else if(nodeArray[col][row].getText()=="     "){
+								
 								nodeArray[col][row].setText("X");
 								controlPanel.setMarkedMines(controlPanel.getMarkedMines()+1);
 							}
 						}
-//						System.out.println(event.getModifiers());
+
 						else{
 							if(nodeArray[col][row].isMine()){
 								nodeArray[col][row].setBackground(Color.red);
 								System.out.println("End Game");
 							}
 							else{
-								nodeArray[col][row].setText(nodeArray[col][row].getNumBorderingMines().toString());
+								showNumber(col, row);
+								
 							}
 						}
 					}
