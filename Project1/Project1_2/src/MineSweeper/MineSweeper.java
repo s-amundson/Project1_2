@@ -29,7 +29,7 @@ public class MineSweeper {
 
 		frame.pack();
         frame.setVisible(true);
-        System.out.println(board.getSize());
+//        System.out.println(board.getSize());
 	}
 
 	public int getMarkedMines() {
