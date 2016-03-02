@@ -180,9 +180,11 @@ public class MineField extends JPanel {
 								controlPanel.setMarkedMines(controlPanel.getMarkedMines()+1);
 							}
 						}
-
 						else{
 							if(nodeArray[col][row].isMine()){
+								if(nodeArray[col][row].getText()=="X"){
+									continue;
+								}
 								nodeArray[col][row].setBackground(Color.red);
 								for(int col2=0; col2 < gridWidth; col2++){
 									for(int row2=0; row2 < gridHeight; row2++){
