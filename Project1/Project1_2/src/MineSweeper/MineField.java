@@ -11,11 +11,12 @@ public class MineField extends JPanel {
 	int gridWidth = 8;
 	int gridHeight = 8;
 	int mineNum = 10;
+	int cellsLeft;
 	Node [][] nodeArray;
 	JPanel gamePanel;
 	Color buttonColor;
 	ControlPanel controlPanel;
-	private String defaultText = "     ";
+	private static String defaultText = "     ";
 	
 	public MineField(){
 		//this.nodeArray = new Node [gridWidth] [gridHeight];
@@ -64,7 +65,7 @@ public class MineField extends JPanel {
 	public void generateFeild(){
 		gamePanel.setLayout(new GridLayout (gridWidth, gridHeight));
 		this.nodeArray = new Node [gridWidth][gridHeight];
-
+		this.cellsLeft = gridWidth*gridHeight-mineNum;
 		
 		for(int i=0; i < gridHeight; i++){
 			for(int j=0; j < gridWidth; j++){
@@ -81,6 +82,7 @@ public class MineField extends JPanel {
 	public void newGame(){
 		Random rand = new Random();
 		Integer numMines;
+		this.cellsLeft = (gridWidth*gridHeight)-mineNum;
 		// loop though the field add the button to the panel and determine how many mines are neighboring each mine.
 		for(int col=0; col < gridWidth; col++){
 			for(int row=0; row < gridHeight; row++){
@@ -88,6 +90,7 @@ public class MineField extends JPanel {
 				nodeArray[col][row].setBackground(buttonColor);
 				nodeArray[col][row].setNumBorderingMines(0);
 				nodeArray[col][row].setText(defaultText);
+				nodeArray[col][row].setEnabled(true);
 			}
 		}
 		controlPanel.setMarkedMines(0);
@@ -131,9 +134,11 @@ public class MineField extends JPanel {
 		}
 	}
 	public void showNumber(int col, int row){ 
+		
 		// shows the number in a cell. If the cell has no bordering mines it checks the surrounding cells
 		try{
 			if(nodeArray[col][row].getText()== defaultText){
+				cellsLeft --;
 				int numMines = nodeArray[col][row].getNumBorderingMines();
 				if(numMines==0){
 					nodeArray[col][row].setText("");
@@ -179,10 +184,20 @@ public class MineField extends JPanel {
 						else{
 							if(nodeArray[col][row].isMine()){
 								nodeArray[col][row].setBackground(Color.red);
+								for(int col2=0; col2 < gridWidth; col2++){
+									for(int row2=0; row2 < gridHeight; row2++){
+										nodeArray[col2][row2].setEnabled(false);
+										controlPanel.stopGame();
+									}
+								}
 								System.out.println("End Game");
 							}
 							else{
 								showNumber(col, row);
+								if(cellsLeft == 0){
+									System.out.println("You Win");
+									controlPanel.stopGame();
+								}
 								
 							}
 						}

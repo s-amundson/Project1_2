@@ -55,6 +55,9 @@ public class ControlPanel extends JPanel{
 		this.markedMines = markedMines;
 		this.mineCount.setText(Integer.toString(markedMines));
 	}
+	public void stopGame(){
+		timer.stop();
+	}
 
 	private class MyListner implements ActionListener{
 		public void actionPerformed(ActionEvent event){
@@ -62,6 +65,9 @@ public class ControlPanel extends JPanel{
 				System.out.println("startNew");
 				parentPanel.newGame();
 				counter = 0;
+				if(!timer.isRunning()){
+					timer.start();
+				}
 
 			}
 		}
